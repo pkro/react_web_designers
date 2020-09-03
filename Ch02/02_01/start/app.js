@@ -2,10 +2,13 @@
   "use strict";
 
   // Start here
-  const ProductCustomizer = React.createElement(
-    "div",
-    { className: "customizer" },
-    "hello world"
+
+  function ProductCustomizer(props) {
+    return React.createElement("h1", { className: "customizer" }, "yay");
+  }
+
+  ReactDOM.render(
+    React.createElement(ProductCustomizer),
+    document.getElementById("react-root")
   );
-  ReactDOM.render(ProductCustomizer, document.getElementById("react-root"));
 })();
