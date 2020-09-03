@@ -2,18 +2,20 @@
   "use strict";
 
   function ProductImage(props) {
-    const { color, size } = props;
-    return React.createElement(
-      "fragment",
-      {},
-      `my size is ${size} and my color is ${color}`
-    );
+    const { color } = props;
+    const src = `../../../assets/${color}.jpg`;
+    return React.createElement("img", { src });
   }
+
   function ProductCustomizer(props) {
     return React.createElement(
       "div",
       { className: "customizer" },
-      ProductImage({ color: "green", size: 10 })
+      React.createElement(
+        "fragment",
+        { className: "product-image" },
+        ProductImage({ color: "green", size: 10 })
+      )
     );
   }
 
