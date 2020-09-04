@@ -415,15 +415,7 @@
             <div class="widget widget_sow-video">
               <div class="widget-content">
                 <div class="so-widget-sow-video so-widget-sow-video-base">
-                  <div class="sow-video-wrapper">
-                    <iframe
-                      width="740"
-                      height="416"
-                      src="https://www.youtube.com/embed/LKafSYIwUfM?feature=oembed"
-                      frameborder="0"
-                      allowfullscreen
-                    ></iframe>
-                  </div>
+                  <div class="sow-video-wrapper"></div>
                 </div>
               </div>
               <div class="clear"></div>
@@ -553,7 +545,14 @@ Polyfills for older browsers
           '<script src="../../../node_modules/react-dom/umd/react-dom.development.js"><\/script>'
         );
     </script>
-
-    <script src="app.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script>
+      window.Babel ||
+        document.write(
+          '<script src="../../../node_modules/babel-standalone/babel.min.js"><\/script>'
+        );
+    </script>
+    <script src="../../../assets/ch02-inventory.js"></script>
+    <script src="app.jsx" type="text/babel"></script>
   </body>
 </html>
