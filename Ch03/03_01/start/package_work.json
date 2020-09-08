@@ -1,0 +1,30 @@
+{
+  "name": "start",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --env.environment=development --config webpack.config.js",
+    "devserver": "webpack-dev-server --env.environment=development --config webpack.config.js",
+    "build": "webpack --env.environment=production --config webpack.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "*",
+    "@babel/core": "*",
+    "babel-loader": "*",
+    "clean-webpack-plugin": "*",
+    "html-webpack-plugin": "*",
+    "webpack": "*",
+    "webpack-cli": "*",
+    "webpack-dev-server": "*"
+  },
+  "dependencies": {
+    "@babel/preset-env": "*",
+    "@babel/preset-react": "*",
+    "core-js": "*"
+  }
+}
