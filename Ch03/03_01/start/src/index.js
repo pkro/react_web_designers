@@ -21,60 +21,157 @@
      */
 
 (function () {
-  function Directory(props) {
-    const { people, titles } = window.LMDirectory;
-    return (
-      <div>
-        <h1>COMPANY DIRECTORY</h1>
-        <p>Learn more about blah</p>
-        <FilterForm titles={titles} />
-        <Employees />
-      </div>
-    );
+  class Directory extends React.Component {
+    constructor(props) {
+      super(props);
+      this.defaultState = window.LMDirectory;
+      this.people = window.LMDirectory.people;
+      this.titles = window.LMDirectory.titles;
+      this.handleChange = this.handleChange.bind(this);
+      this.updatePeople = this.updatePeople.bind(this);
+      this.state = {
+        people: this.people,
+        formVals: {
+          person_name: "",
+          person_title: "",
+          person_intern: false,
+        },
+      };
+    }
+
+    handleChange(e) {
+      const { name, value } = e.target;
+      const newVal =
+        typeof this.state.formVals[name] === "boolean"
+          ? !this.state.formVals[name]
+          : value;
+      this.setState(
+        (prevState) => ({
+          formVals: {
+            ...prevState.formVals,
+            [name]: newVal,
+          },
+        }),
+        this.updatePeople
+      );
+    }
+
+    updatePeople() {
+      const peopleFilter = function (prevState) {
+        const {
+          person_name: name,
+          person_title: title,
+          person_intern: intern,
+        } = prevState.formVals;
+
+        return function (person) {
+          return (
+            (name ? person.name.indexOf(name) !== -1 : true) &&
+            (title ? person.title_cat === title : true) &&
+            (intern ? person.intern === intern : true)
+          );
+        };
+      };
+
+      this.setState((prevState) => ({
+        ...prevState,
+        people: this.people.filter(peopleFilter(prevState)),
+      }));
+    }
+
+    render() {
+      const { person_name, person_title, person_intern } = this.state.formVals;
+      return (
+        <div className="company-directory">
+          <h1>COMPANY DIRECTORY</h1>
+          <p>Learn more about blah</p>
+          <Filters
+            titles={this.titles}
+            person_name={person_name}
+            person_title={person_title}
+            person_intern={person_intern}
+            handleChange={this.handleChange}
+          />
+          <People people={this.state.people} />
+        </div>
+      );
+    }
   }
 
-  function FilterForm({ titles }) {
+  function Filters({ titles, person_name, person_title, person_intern, handleChange }) {
     return (
       <div id="directory-filters">
         <div className="group">
-          <label for="txt-name">Name:</label>
+          <label htmlFor="person-name">Name:</label>
           <input
             type="text"
-            name="name"
-            value=""
+            name="person_name"
+            value={person_name}
             placeholder="Name of employee"
-            id="txt-name"
+            onChange={handleChange}
           />
         </div>
-        <div className="group">
-          <label for="sel-title">Job Title:</label>
-          <select name="sel-title" id="sel-title">
-            <option value="">- Select -</option>
-            {titles.map((title) => (
-              <option value={title.key} key={title.key}>
-                {title.display}
-              </option>
-            ))}
-          </select>
-        </div>
+        <label htmlFor="person-title">Job Title:</label>
+
+        <select
+          name="person_title"
+          id="person-title"
+          value={person_title}
+          onChange={handleChange}>
+          <option value="">- Select -</option>
+          {titles.map((title) => (
+            <option value={title.key} key={title.key}>
+              {title.display}
+            </option>
+          ))}
+        </select>
+
         <div className="group">
           <label>
-            <input type="checkbox" value="1" /> Intern
+            <input
+              type="checkbox"
+              value="1"
+              name="person_intern"
+              checked={person_intern}
+              onChange={handleChange}
+            />{" "}
+            Intern
           </label>
         </div>
       </div>
     );
   }
-  function Employees(props) {
+  function People({ people }) {
     return (
       <div>
-        <Employee name="dummy1" />
-        <Employee name="dummy2" />
+        {people.map((emp) => {
+          return <Person {...emp} key={emp.id} />;
+        })}
       </div>
     );
   }
-  function Employee(props) {
-    return <h3>Employee {props.name}</h3>;
+
+  function Person({ name, title, bio, img }) {
+    return (
+      <div>
+        <h3>
+          {name}, {title}
+        </h3>
+
+        <p>
+          <img
+            className=" size-medium wp-image-14 alignright"
+            src={img}
+            alt={name}
+            width="300"
+            height="300"
+            sizes="(max-width: 300px) 100vw, 300px"
+          />
+          {bio}
+        </p>
+      </div>
+    );
   }
+
   ReactDOM.render(<Directory />, document.getElementById("directory-root"));
 })();
