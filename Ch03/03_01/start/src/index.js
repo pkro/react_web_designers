@@ -66,7 +66,9 @@
 
         return function (person) {
           return (
-            (name ? person.name.indexOf(name) !== -1 : true) &&
+            (name.toLowerCase()
+              ? person.name.toLowerCase().indexOf(name) !== -1
+              : true) &&
             (title ? person.title_cat === title : true) &&
             (intern ? person.intern === intern : true)
           );
