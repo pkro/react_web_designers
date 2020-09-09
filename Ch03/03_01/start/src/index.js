@@ -57,12 +57,12 @@
     }
 
     updatePeople() {
-      const peopleFilter = function (prevState) {
+      const peopleFilter = function (formVals) {
         const {
           person_name: name,
           person_title: title,
           person_intern: intern,
-        } = prevState.formVals;
+        } = formVals;
 
         return function (person) {
           return (
@@ -77,7 +77,7 @@
 
       this.setState((prevState) => ({
         ...prevState,
-        people: this.people.filter(peopleFilter(prevState)),
+        people: this.people.filter(peopleFilter(prevState.formVals)),
       }));
     }
 
