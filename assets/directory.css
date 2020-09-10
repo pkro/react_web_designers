@@ -28,12 +28,12 @@
 }
 
 #directory-filters label {
-	padding-right: 0.3em;
+  padding-right: 0.3em;
 }
 
-#directory-filters input[type=text],
+#directory-filters input[type="text"],
 #directory-filters select {
-  font-family: 'robotolight', Arial, sans-serif;
+  font-family: "robotolight", Arial, sans-serif;
   font-size: 108%;
   padding: 0.25em;
   border: 1px solid #b3c3a0;
@@ -41,10 +41,18 @@
   color: #242;
 }
 
-#directory-filters input[type=submit] {
-  font-family: 'robotolight', Arial, sans-serif;
+#directory-filters input[type="submit"] {
+  font-family: "robotolight", Arial, sans-serif;
   font-size: 108%;
   padding: 0.25em;
+}
+#directory-filters button {
+  font-family: "robotolight", Arial, sans-serif;
+  font-size: 108%;
+  padding: 0.25em 1em;
+  background: white;
+  border: 1px solid #b3c3a0;
+  margin-left: 2em;
 }
 
 /* CSSTransition styles */
@@ -81,9 +89,9 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-color: #EEE;
-  background-image: linear-gradient(#FCFCFC, #EEE);
-  border: 1px solid #D5D5D5;
+  background-color: #eee;
+  background-image: linear-gradient(#fcfcfc, #eee);
+  border: 1px solid #d5d5d5;
   border-radius: 3px;
   font-weight: bold;
   padding: 6px 10px;
@@ -103,16 +111,16 @@
 .TitleMenuButton-button:hover,
 .TitleMenuButton-button:focus,
 .TitleMenuButton-button.is-open {
-  background-color: #DDD;
-  background-image: linear-gradient(#EEE, #DDD);
-  border-color: #CCC;
+  background-color: #ddd;
+  background-image: linear-gradient(#eee, #ddd);
+  border-color: #ccc;
 }
 
 .TitleMenuButton-button:active,
 .TitleMenuButton-button.is-open {
-  background-color: #DCDCDC;
+  background-color: #dcdcdc;
   background-image: none;
-  border-color: #B5B5B5;
+  border-color: #b5b5b5;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
@@ -138,7 +146,7 @@
 .TitleMenuButton-menuItem {
   cursor: pointer;
   padding: 8px;
-  border-bottom: 1px solid #EEE;
+  border-bottom: 1px solid #eee;
 }
 
 .TitleMenuButton-menuItemWrapper:first-of-type .TitleMenuButton-menuItem {
@@ -153,7 +161,7 @@
 
 .TitleMenuButton-menuItem:hover,
 .TitleMenuButton-menuItem:focus {
-  background-color: #4183C4;
+  background-color: #4183c4;
   color: #fff;
 }
 
