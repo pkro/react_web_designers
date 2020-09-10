@@ -29,7 +29,7 @@
       this.titles = window.LMDirectory.titles;
       this.handleChange = this.handleChange.bind(this);
       this.updatePeople = this.updatePeople.bind(this);
-      this.state = {
+      this.defaultState = {
         people: this.people,
         formVals: {
           person_name: "",
@@ -37,10 +37,14 @@
           person_intern: false,
         },
       };
+      this.state = this.defaultState;
     }
 
     handleChange(e) {
       const { name, value } = e.target;
+      if (name === "reset") {
+        this.setState(this.defaultState, this.updatePeople);
+      }
       const newVal =
         typeof this.state.formVals[name] === "boolean"
           ? !this.state.formVals[name]
@@ -139,16 +143,42 @@
             />{" "}
             Intern
           </label>
+          <div className="group">
+            <button role="button" onClick={handleChange} name="reset" id="reset-button">
+              Reset
+            </button>
+          </div>
         </div>
       </div>
     );
   }
   function People({ people }) {
     return (
-      <div>
-        {people.map((emp) => {
-          return <Person {...emp} key={emp.id} />;
-        })}
+      <div className="results">
+        <ReactTransitionGroup.TransitionGroup>
+          {people.map((emp) => {
+            // https://reactcommunity.org/react-transition-group/css-transition
+            // keys enter, enterActive etc. are defined by the ReactTransitionGroup lib, not arbitrary
+            // if the css styles are named accordingly, it is enough to just define the css style name prefix
+            // so classNames = fade is the same as
+            // classNames={{
+            //   enter: "fade-enter",
+            //   enterActive: "fade-enter fade-enter-active",
+            //   exit: "fade-exit",
+            //   exitActive: "fade-enter fade-exit-active",
+            // }}
+            // timeout: time after which the element gets removed
+            // doesn't override the actual css transition time, both must be set accordingly
+            return (
+              <ReactTransitionGroup.CSSTransition
+                key={emp.id}
+                classNames="fade"
+                timeout={2000}>
+                <Person {...emp} />
+              </ReactTransitionGroup.CSSTransition>
+            );
+          })}
+        </ReactTransitionGroup.TransitionGroup>
       </div>
     );
   }
