@@ -160,7 +160,7 @@
             // https://reactcommunity.org/react-transition-group/css-transition
             // keys enter, enterActive etc. are defined by the ReactTransitionGroup lib, not arbitrary
             // if the css styles are named accordingly, it is enough to just define the css style name prefix
-            // so classNames = fade is the same as
+            // so classNames="fade" is the same as
             // classNames={{
             //   enter: "fade-enter",
             //   enterActive: "fade-enter fade-enter-active",
@@ -172,8 +172,13 @@
             return (
               <ReactTransitionGroup.CSSTransition
                 key={emp.id}
-                classNames="fade"
-                timeout={2000}>
+                classNames={{
+                  enter: "animate__animated",
+                  enterActive: "animate__zoomIn",
+                  exit: "animate__animated",
+                  exitActive: "animate__zoomOut",
+                }}
+                timeout={1000}>
                 <Person {...emp} />
               </ReactTransitionGroup.CSSTransition>
             );
