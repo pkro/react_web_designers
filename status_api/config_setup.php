@@ -8,12 +8,12 @@
 $connection = [];
 $connection['host'] = 'localhost';
 $connection['user'] = 'root';
-$connection['pass'] = 'root';
+$connection['pass'] = '';
 $connection['name'] = 'status_api';
 
 $table = 'statuses';
 
-$gDB = mysqli_connect($connection['host'], $connection['user'], $connection['pass'], $connection['name']);
+$gDB = mysqli_connect($connection['host'], $connection['user'], false, $connection['name']);
 
 if (mysqli_connect_errno()) {
     printf("Database connection failed: %s\n", mysqli_connect_error());

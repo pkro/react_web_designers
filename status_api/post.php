@@ -13,7 +13,8 @@ $newID = mysqli_stmt_insert_id($stmt);
 
 mysqli_close($gDB);
 
-header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *', false);
+header('Content-Type: application/json', false);
 die(json_encode([
     'success' => TRUE,
     'id' => $newID

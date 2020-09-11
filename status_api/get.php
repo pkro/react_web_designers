@@ -8,5 +8,6 @@ $messages = mysqli_fetch_all($res, MYSQLI_ASSOC);
 
 mysqli_close($gDB);
 
-header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *', false);
+header('Content-Type: application/json', false);
 die(json_encode($messages));
