@@ -19,5 +19,6 @@ header('Access-Control-Allow-Origin: *', false);
 header('Content-Type: application/json', false);
 die(json_encode([
     'success' => TRUE,
-    'id' => $newID
+    'id' => $newID,
+    'time' => $time
 ]));
