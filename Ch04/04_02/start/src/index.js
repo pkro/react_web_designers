@@ -8,11 +8,11 @@ const CONFIG = {
 (function () {
   "use strict";
 
-  function PostForm(props) {
+  function PostForm({ messageTypes }) {
     const typeOptions = Reflect.ownKeys(messageTypes).map(function (key) {
       return (
         <option key={key} value={key}>
-          {props.messageTypes[key]}
+          {messageTypes[key]}
         </option>
       );
     });
