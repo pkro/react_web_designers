@@ -53,20 +53,19 @@ const { default: Axios } = require("axios");
 
   function StatusMessageList(props) {
     var [statuses, setStatuses] = React.useState([]);
+    var [loaded, setLoaded] = React.useState(false);
 
     React.useEffect(() => {
       async function getStatuses() {
-        const res = await Axios.get(`${props.apiUrl}/get.php`);
+        const res = await Axios.get(`${props.apiUrl}/get.php?delay=3`);
         return res.data;
       }
       async function setStats() {
         setStatuses(await getStatuses());
+        setLoaded(true);
       }
       setStats();
-      // return () => {
-      //   cleanup;
-      // };
-    }, []);
+    }, [setLoaded]);
 
     function displayStatusMessages() {
       return statuses.map(function (status) {
@@ -81,7 +80,17 @@ const { default: Axios } = require("axios");
         );
       });
     }
-
+    if (!loaded)
+      return (
+        <div id="status-list" className="loading">
+          loading...
+          <div className="spinner">
+            <div className="bounce1"></div>
+            <div className="bounce2"></div>
+            <div className="bounce3"></div>
+          </div>
+        </div>
+      );
     return <ul id="status-list">{displayStatusMessages()}</ul>;
   }
 
