@@ -2,13 +2,13 @@ const { default: Axios } = require("axios");
 
 const CONFIG = {
   apiUrl: "http://localhost/status_api",
-  loadDelay: 3,
+  loadDelay: 1,
 };
 
 (function () {
   "use strict";
 
-  function PostForm({ messageTypes }) {
+  function PostForm({ messageTypes, addStatusMessage }) {
     const typeOptions = Reflect.ownKeys(messageTypes).map(function (key) {
       return (
         <option key={key} value={key}>
@@ -17,13 +17,12 @@ const CONFIG = {
       );
     });
 
-    // so we don't have to type this over and over
-    var defaultType = typeOptions[0].key;
-
-    const [formVals, setFormVals] = React.useState({
+    const defaultFormValues = {
       msg: "",
-      type: defaultType,
-    });
+      type: typeOptions[0].key,
+    };
+
+    const [formVals, setFormVals] = React.useState(defaultFormValues);
     const [postDisabled, setPostDisabled] = React.useState(true);
 
     const handleChange = function (e) {
@@ -33,7 +32,19 @@ const CONFIG = {
 
     const onSubmit = function (e) {
       e.preventDefault();
-      Axios.post(`${CONFIG.apiUrl}/post.php`, JSON.stringify(formVals));
+      // could be done asyng as the get, but for promise practice as a promise
+      Axios.post(`${CONFIG.apiUrl}/post.php`, JSON.stringify(formVals)).then(
+        (response) => {
+          if (response.data.success) {
+            addStatusMessage({
+              ...formVals,
+              id: response.data.id,
+              time: response.data.time,
+            });
+            setFormVals(defaultFormValues);
+          }
+        }
+      );
     };
 
     return (
@@ -87,29 +98,14 @@ const CONFIG = {
     );
   }
 
-  function StatusMessageList(props) {
-    var [statuses, setStatuses] = React.useState([]);
-    var [loaded, setLoaded] = React.useState(false);
-
-    React.useEffect(() => {
-      async function getStatuses() {
-        const res = await Axios.get(`${CONFIG.apiUrl}/get.php?delay=${CONFIG.loadDelay}`);
-        return res.data;
-      }
-      async function setStats() {
-        setStatuses(await getStatuses());
-        setLoaded(true);
-      }
-      setStats();
-    }, [setLoaded]);
-
+  function StatusMessageList({ messageTypes, statuses, loaded }) {
     function displayStatusMessages() {
       return statuses.map(function (status) {
         return (
           <li key={status.id}>
             <StatusMessage
               msg={status.msg}
-              type={props.messageTypes[status.type]}
+              type={messageTypes[status.type]}
               time={status.time}
             />
           </li>
@@ -139,12 +135,35 @@ const CONFIG = {
       pool: "Pool",
     };
 
+    var [statuses, setStatuses] = React.useState([]);
+    var [loaded, setLoaded] = React.useState(false);
+
+    React.useEffect(() => {
+      async function getStatuses() {
+        const res = await Axios.get(`${CONFIG.apiUrl}/get.php?delay=${CONFIG.loadDelay}`);
+        return res.data;
+      }
+      async function setStats() {
+        setStatuses(await getStatuses());
+        setLoaded(true);
+      }
+      setStats();
+    }, [setLoaded]);
+
+    function addStatusMessage(status) {
+      setStatuses([...statuses, status]);
+    }
+
     return (
       <React.Fragment>
         <div id="post-status">
-          <PostForm messageTypes={messageTypes} />
+          <PostForm messageTypes={messageTypes} addStatusMessage={addStatusMessage} />
         </div>
-        <StatusMessageList messageTypes={messageTypes} />
+        <StatusMessageList
+          messageTypes={messageTypes}
+          statuses={statuses}
+          loaded={loaded}
+        />
       </React.Fragment>
     );
   }
