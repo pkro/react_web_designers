@@ -20,22 +20,55 @@ const CONFIG = {
     // so we don't have to type this over and over
     var defaultType = typeOptions[0].key;
 
+    const [formVals, setFormVals] = React.useState({
+      msg: "",
+      type: defaultType,
+    });
+    const [postDisabled, setPostDisabled] = React.useState(true);
+
+    const handleChange = function (e) {
+      setFormVals({ ...formVals, [e.target.name]: e.target.value });
+      setPostDisabled(formVals.msg.trim().length === 0);
+    };
+
+    const onSubmit = function (e) {
+      e.preventDefault();
+      Axios.post(`${CONFIG.apiUrl}/post.php`, JSON.stringify(formVals));
+    };
+
     return (
       <form>
         <h3>Post an Update</h3>
 
         <div className="field-group">
           <label htmlFor="txt-message">Message</label>
-          <textarea id="txt-message" rows="2" />
+          <textarea
+            id="txt-message"
+            rows="2"
+            name="msg"
+            value={formVals.msg}
+            onChange={handleChange}
+          />
         </div>
 
         <div className="field-group">
           <label htmlFor="txt-type">Type</label>
-          <select id="txt-type">{typeOptions}</select>
+          <select
+            id="txt-type"
+            name="type"
+            defaultValue={formVals.type}
+            onChange={handleChange}>
+            {typeOptions}
+          </select>
         </div>
 
         <div className="field-group action">
-          <input type="submit" value="Post Update" />
+          <input
+            type="submit"
+            value="Post Update"
+            onClick={onSubmit}
+            disabled={postDisabled}
+          />
         </div>
       </form>
     );
