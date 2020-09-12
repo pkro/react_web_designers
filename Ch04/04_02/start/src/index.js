@@ -1,5 +1,10 @@
 const { default: Axios } = require("axios");
 
+const CONFIG = {
+  apiUrl: "http://localhost/status_api",
+  loadDelay: 3,
+};
+
 (function () {
   "use strict";
 
@@ -57,7 +62,7 @@ const { default: Axios } = require("axios");
 
     React.useEffect(() => {
       async function getStatuses() {
-        const res = await Axios.get(`${props.apiUrl}/get.php?delay=3`);
+        const res = await Axios.get(`${CONFIG.apiUrl}/get.php?delay=${CONFIG.loadDelay}`);
         return res.data;
       }
       async function setStats() {
@@ -103,14 +108,12 @@ const { default: Axios } = require("axios");
       pool: "Pool",
     };
 
-    var apiUrl = "http://localhost/status_api";
-
     return (
       <React.Fragment>
         <div id="post-status">
           <PostForm messageTypes={messageTypes} />
         </div>
-        <StatusMessageList messageTypes={messageTypes} apiUrl={apiUrl} />
+        <StatusMessageList messageTypes={messageTypes} />
       </React.Fragment>
     );
   }
